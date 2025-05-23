@@ -1,0 +1,93 @@
+{
+  "agents": [
+    {
+      "name": "homeowner",
+      "class": "instabids.agents.homeowner.agent.HomeownerAgent",
+      "description": "Helps homeowners define and manage their projects with interactive Q&A",
+      "type": "live"
+    },
+    {
+      "name": "outbound_recruiter",
+      "class": "instabids.agents.recruiter.agent.OutboundRecruiterAgent",
+      "description": "Matches projects with contractors and sends invitations",
+      "type": "base"
+    },
+    {
+      "name": "contractor",
+      "class": "instabids.agents.contractor.agent.ContractorAgent",
+      "description": "Assists contractors in reviewing projects and formulating bids",
+      "type": "llm"
+    },
+    {
+      "name": "prompt_selector",
+      "class": "instabids.agents.meta.prompt_selector.PromptSelectorAgent",
+      "description": "Selects appropriate prompts for other agents based on context",
+      "type": "llm"
+    },
+    {
+      "name": "core_orchestrator",
+      "class": "instabids.agents.meta.orchestrator.CoreOrchestratorAgent",
+      "description": "Manages and coordinates all other agents in the system",
+      "type": "base"
+    }
+  ],
+  "tools": [
+    {
+      "name": "analyze_image",
+      "module": "instabids.tools.vision"
+    },
+    {
+      "name": "generate_bid_card",
+      "module": "instabids.tools.bid_card"
+    },
+    {
+      "name": "save_scope_fact",
+      "module": "instabids.tools.supabase_tools"
+    },
+    {
+      "name": "fetch_user_preferences",
+      "module": "instabids.tools.supabase_tools"
+    },
+    {
+      "name": "save_user_preference",
+      "module": "instabids.tools.supabase_tools"
+    },
+    {
+      "name": "create_project",
+      "module": "instabids.tools.supabase_tools"
+    },
+    {
+      "name": "send_message",
+      "module": "instabids.tools.messaging"
+    },
+    {
+      "name": "match_contractors",
+      "module": "instabids.tools.matching"
+    }
+  ],
+  "session": {
+    "type": "persistent",
+    "backend": "supabase",
+    "config": {
+      "table": "agent_sessions",
+      "ttl_seconds": 3600
+    }
+  },
+  "memory": {
+    "type": "persistent",
+    "backend": "supabase",
+    "config": {
+      "table": "agent_memory",
+      "max_entries": 1000
+    }
+  },
+  "tracing": {
+    "enabled": true,
+    "backend": "stdout",
+    "level": "INFO"
+  },
+  "live_settings": {
+    "max_ttl_secs": 300,
+    "default_model": "gemini-2.0-flash-exp"
+  }
+}
